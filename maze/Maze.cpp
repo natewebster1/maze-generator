@@ -297,12 +297,12 @@ void Maze::display(bool showSolution)
             }
             std::cout << std::endl;
         } else
-        { // vertical walls
+        { // vertical walls and inners of cell
             for (int n = 0; n < 2; n++) // two identical rows of characters must be printed
             {
                 for (int j = 0; j < 2 * m_columns + 1; j++)
                 {
-                    if (j % 2 == 1)
+                    if (j % 2 == 1) // prints the cells
                     {
                         if (showSolution && m_solution[i/2][j/2]) {
                             // cell is part of the solution path
@@ -310,13 +310,13 @@ void Maze::display(bool showSolution)
                                 std::cout <<  m_soltn_char;
                         } else
                             std::cout << "   "; // blank space printed for all cells in maze
-                    } else
+                    } else // prints vertical walls
                     {
                         switch (m_verticalWalls[j/2][i/2]) {
-                            case 0:
+                            case 0: // gap in walls
                                 if (showSolution)
                                 {
-                                    if (j != 0 && j != 2 * m_rows)
+                                    if (j != 0 && j != 2 * m_columns)
                                     {
                                         // check if cells left and right are part of solution
                                         if (m_solution[i/2][j/2] && m_solution[i/2][j/2 - 1])
@@ -324,11 +324,11 @@ void Maze::display(bool showSolution)
                                         else
                                             std::cout << " ";
                                     } else //gaps in far left and right walls of maze always part of solution
-                                        std::cout <<  m_soltn_char;
+                                        std::cout << m_soltn_char;
                                 } else
                                     std::cout << " ";
                                 break;
-                            case 1:
+                            case 1: // wall is there
                                 std::cout <<  m_wall_char;
                                 break;
                         }
