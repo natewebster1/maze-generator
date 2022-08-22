@@ -12,8 +12,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-Maze::Maze(int rows, int columns, std::string start, std::string end)
-: m_rows(rows), m_columns(columns), m_startPoint(start), m_endPoint(end), m_beenSolved(false)
+Maze::Maze(int rows, int columns, std::string start, std::string end, char wall_char, char soltn_char)
+: m_rows(rows), m_columns(columns), m_startPoint(start), m_endPoint(end), m_beenSolved(false),
+    m_wall_char(wall_char), m_soltn_char(soltn_char)
 {
     m_horizontalWalls.resize(m_rows + 1);
     for (int i = 0; i < m_rows + 1; i++)
@@ -173,6 +174,7 @@ Maze::Maze(int rows, int columns, std::string start, std::string end)
 
 void Maze::display_solution()
 {
+    // If maze hasn't been solved yet, do that
     if (!m_beenSolved) {
         m_solution.resize(m_rows);
         for (int i = 0; i < m_rows; i++)
@@ -199,11 +201,12 @@ void Maze::display_solution()
         
         // take cells from the solutionPath and mark them in 2d vector m_solution member
         for (int i = 0; i < solutionPath.size(); i++) {
-//            std::cerr << "[" << solutionPath[i][0] << "," << solutionPath[i][1] << "]" << std::endl;
             m_solution[solutionPath[i][0]][solutionPath[i][1]] = true;
         }
         m_beenSolved = true;
     }
+    
+    // Actual work of displaying solution is done in display(), using m_solution
     display(true);
 }
 
@@ -266,14 +269,28 @@ void Maze::display(bool showSolution)
             for (int k = 0; k < 2 * m_columns + 1; k++)
             {
                 if (k % 2 == 0)
-                    std::cout << "X";
+                    std::cout <<  m_wall_char;
                 else {
                     switch (m_horizontalWalls[i/2][k/2]) {
-                        case 0:
-                            std::cout << "   ";
+                        case 0: // gap in the wall
+                            if (showSolution)
+                            {
+                                if (i != 0 && i != 2 * m_rows)
+                                {
+                                    // check if cells above and below are part of solution
+                                    if (m_solution[i/2][k/2] && m_solution[i/2 - 1][k/2])
+                                        for (int s = 0; s < 3; s++)
+                                            std::cout <<  m_soltn_char;
+                                    else
+                                        std::cout << "   ";
+                                } else // top and bottom rows always part of solution if there's a gap
+                                    for (int s = 0; s < 3; s++)
+                                        std::cout <<  m_soltn_char;
+                            } else
+                                std::cout << "   ";
                             break;
-                        case 1:
-                            std::cout << " X ";
+                        case 1: // no gap in wall
+                            std::cout << ' ' <<  m_wall_char << ' ';
                             break;
                     }
                 }
@@ -283,26 +300,41 @@ void Maze::display(bool showSolution)
         { // vertical walls
             for (int n = 0; n < 2; n++) // two identical rows of characters must be printed
             {
-            for (int j = 0; j < 2 * m_columns + 1; j++)
-            {
-                if (j % 2 == 1) {
-                    if (showSolution && m_solution[i/2][j/2]) {
-                        std::cout << "$$$"; // cell is part of the solution path
-                    } else
-                        std::cout << "   "; // blank space printed for all cells in maze
-                } else
+                for (int j = 0; j < 2 * m_columns + 1; j++)
                 {
-                    switch (m_verticalWalls[j/2][i/2]) {
-                        case 0:
-                            std::cout << " ";
-                            break;
-                        case 1:
-                            std::cout << "X";
-                            break;
+                    if (j % 2 == 1)
+                    {
+                        if (showSolution && m_solution[i/2][j/2]) {
+                            // cell is part of the solution path
+                            for (int s = 0; s < 3; s++)
+                                std::cout <<  m_soltn_char;
+                        } else
+                            std::cout << "   "; // blank space printed for all cells in maze
+                    } else
+                    {
+                        switch (m_verticalWalls[j/2][i/2]) {
+                            case 0:
+                                if (showSolution)
+                                {
+                                    if (j != 0 && j != 2 * m_rows)
+                                    {
+                                        // check if cells left and right are part of solution
+                                        if (m_solution[i/2][j/2] && m_solution[i/2][j/2 - 1])
+                                            std::cout <<  m_soltn_char;
+                                        else
+                                            std::cout << " ";
+                                    } else //gaps in far left and right walls of maze always part of solution
+                                        std::cout <<  m_soltn_char;
+                                } else
+                                    std::cout << " ";
+                                break;
+                            case 1:
+                                std::cout <<  m_wall_char;
+                                break;
+                        }
                     }
                 }
-            }
-            std::cout << std::endl;
+                std::cout << std::endl;
             }
         }
     }
