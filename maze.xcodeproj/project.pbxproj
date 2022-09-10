@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2D522CEA26DF3840009045D6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D522CE926DF3840009045D6 /* main.cpp */; };
 		2D522CF226DF3CA8009045D6 /* Maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D522CF126DF3CA8009045D6 /* Maze.cpp */; };
+		2DD7DCC628C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7DCC528C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib */; };
+		2DD7DCCC28C722B9003820DC /* libopencv_highgui.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7DCCB28C722B9003820DC /* libopencv_highgui.4.6.0.dylib */; };
+		2DD7DCCE28C72AC4003820DC /* libopencv_core.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7DCCD28C72AC4003820DC /* libopencv_core.4.6.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +31,10 @@
 		2D522CE926DF3840009045D6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		2D522CF026DF3BD9009045D6 /* Maze.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Maze.h; sourceTree = "<group>"; };
 		2D522CF126DF3CA8009045D6 /* Maze.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Maze.cpp; sourceTree = "<group>"; };
+		2DD7DCC528C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgcodecs.4.6.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.6.0/lib/libopencv_imgcodecs.4.6.0.dylib; sourceTree = "<group>"; };
+		2DD7DCCB28C722B9003820DC /* libopencv_highgui.4.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.4.6.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.6.0/lib/libopencv_highgui.4.6.0.dylib; sourceTree = "<group>"; };
+		2DD7DCCD28C72AC4003820DC /* libopencv_core.4.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.4.6.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.6.0/lib/libopencv_core.4.6.0.dylib; sourceTree = "<group>"; };
+		2DD7DCCF28CA78A8003820DC /* maze.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = maze.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DD7DCCE28C72AC4003820DC /* libopencv_core.4.6.0.dylib in Frameworks */,
+				2DD7DCC628C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib in Frameworks */,
+				2DD7DCCC28C722B9003820DC /* libopencv_highgui.4.6.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +54,9 @@
 		2D522CDD26DF3840009045D6 = {
 			isa = PBXGroup;
 			children = (
+				2DD7DCCD28C72AC4003820DC /* libopencv_core.4.6.0.dylib */,
+				2DD7DCCB28C722B9003820DC /* libopencv_highgui.4.6.0.dylib */,
+				2DD7DCC528C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib */,
 				2D522CE826DF3840009045D6 /* maze */,
 				2D522CE726DF3840009045D6 /* Products */,
 			);
@@ -60,6 +73,7 @@
 		2D522CE826DF3840009045D6 /* maze */ = {
 			isa = PBXGroup;
 			children = (
+				2DD7DCCF28CA78A8003820DC /* maze.entitlements */,
 				2D522CE926DF3840009045D6 /* main.cpp */,
 				2D522CF026DF3BD9009045D6 /* Maze.h */,
 				2D522CF126DF3CA8009045D6 /* Maze.cpp */,
@@ -166,6 +180,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -225,6 +240,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -245,20 +261,38 @@
 		2D522CEE26DF3840009045D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_ENTITLEMENTS = maze/maze.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VZKDCL4AQ6;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = /usr/local;
+				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.6.0/include/**";
+				LIBRARY_SEARCH_PATHS = (
+					"/usr/local/Cellar/opencv/4.6.0/lib/**",
+					/usr/local/Cellar/opencv/4.6.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 			};
 			name = Debug;
 		};
 		2D522CEF26DF3840009045D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_ENTITLEMENTS = maze/maze.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VZKDCL4AQ6;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = /usr/local;
+				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.6.0/include/**";
+				LIBRARY_SEARCH_PATHS = (
+					"/usr/local/Cellar/opencv/4.6.0/lib/**",
+					/usr/local/Cellar/opencv/4.6.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 			};
 			name = Release;
 		};

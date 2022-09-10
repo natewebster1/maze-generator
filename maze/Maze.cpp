@@ -11,10 +11,15 @@
 #include <stack>
 #include <stdlib.h>
 #include <time.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgcodecs/imgcodecs.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 Maze::Maze(int rows, int columns, std::string start, std::string end, char wall_char, char soltn_char)
 : m_rows(rows), m_columns(columns), m_startPoint(start), m_endPoint(end), m_beenSolved(false),
-    m_wall_char(wall_char), m_soltn_char(soltn_char)
+    m_wall_char(wall_char), m_soltn_char(soltn_char), m_wall_color(100), m_soltn_color(255),
+m_space_color(0)
 {
     m_horizontalWalls.resize(m_rows + 1);
     for (int i = 0; i < m_rows + 1; i++)
@@ -339,4 +344,89 @@ void Maze::display(bool showSolution)
         }
     }
     std::cout << std::endl;
+}
+
+void Maze::display_image(bool showSolution)
+{
+    std::vector<uint8_t> image_vec;
+    
+    for (int i = 0; i < 2 * m_rows + 1; i++)
+    {
+        if (i % 2 == 0)
+        { // horizontal walls
+            for (int k = 0; k < 2 * m_columns + 1; k++)
+            {
+                if (k % 2 == 0)
+                    image_vec.push_back(m_wall_color);
+                else {
+                    switch (m_horizontalWalls[i/2][k/2]) {
+                        case 0: // gap in the wall
+                            if (showSolution)
+                            {
+                                if (i != 0 && i != 2 * m_rows)
+                                {
+                                    // check if cells above and below are part of solution
+                                    if (m_solution[i/2][k/2] && m_solution[i/2 - 1][k/2])
+                                        image_vec.push_back(m_soltn_color);
+                                    else
+                                        image_vec.push_back(m_space_color);
+                                } else // top and bottom rows always part of solution if there's a gap
+                                    image_vec.push_back(m_soltn_color);
+                            } else
+                                image_vec.push_back(m_space_color);
+                            break;
+                        case 1: // no gap in wall
+                            image_vec.push_back(m_wall_color);
+                            break;
+                    }
+                }
+            }
+        } else
+        { // vertical walls and inners of cell
+            for (int j = 0; j < 2 * m_columns + 1; j++)
+            {
+                if (j % 2 == 1) // prints the cells
+                {
+                    if (showSolution && m_solution[i/2][j/2]) {
+                        // cell is part of the solution path
+                        image_vec.push_back(m_soltn_color);
+                    } else
+                        image_vec.push_back(m_space_color); // blank space printed for all cells in maze
+                } else // prints vertical walls
+                {
+                    switch (m_verticalWalls[j/2][i/2]) {
+                        case 0: // gap in walls
+                            if (showSolution)
+                            {
+                                if (j != 0 && j != 2 * m_columns)
+                                {
+                                    // check if cells left and right are part of solution
+                                    if (m_solution[i/2][j/2] && m_solution[i/2][j/2 - 1])
+                                        image_vec.push_back(m_soltn_color);
+                                    else
+                                        image_vec.push_back(m_space_color);
+                                } else //gaps in far left and right walls of maze always part of solution
+                                    image_vec.push_back(m_soltn_color);
+                            } else
+                                image_vec.push_back(m_space_color);
+                            break;
+                        case 1: // wall is there
+                            image_vec.push_back(m_wall_color);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    
+    cv::Mat imgVec(2 * m_rows + 1, 2 * m_columns + 1, CV_8U, image_vec.data());
+    std::string windowName = "Maze image";
+    cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
+    cv::imshow(windowName, imgVec);
+    int k = cv::waitKey(0);
+    if (k == 's') {
+        cv::imwrite("/Users/natewebster/Desktop/maze_img.png", imgVec);
+    }
+    cv::destroyWindow(windowName);
+    cv::waitKey(1);
 }

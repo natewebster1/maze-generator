@@ -12,6 +12,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <limits>
+
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgcodecs/imgcodecs.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
 using namespace std;
 
 void ignoreLine();
@@ -108,7 +114,11 @@ int main(int argc, const char * argv[]) {
         }
         
         std::cout << "\n";
+        
+        M.display_image();
+        M.display_image(true);
     }
+    
     return 0;
 }
 
