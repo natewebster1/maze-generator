@@ -177,14 +177,24 @@ m_space_color(0)
     }
 }
 
-void Maze::display_solution()
+void Maze::display_solution_ASCII()
 {
     // If maze hasn't been solved yet, do that
     if (!m_beenSolved)
         solve();
     
-    // Actual work of displaying solution is done in display(), using m_solution
-    display(true);
+    // Actual work of displaying solution is done in display, using m_solution
+    display_ASCII(true);
+}
+
+void Maze::display_solution_image()
+{
+    // If maze hasn't been solved yet, do that
+    if (!m_beenSolved)
+        solve();
+    
+    // Actual work of displaying solution is done in display, using m_solution
+    display_image(true);
 }
 
 void Maze::solve()
@@ -219,7 +229,7 @@ void Maze::solve()
     m_beenSolved = true;
 }
 
-// helper function to solve because it uses recursion
+// helper function to solve3 because it uses recursion
 bool Maze::solver(std::vector<std::vector<int>>& path, std::vector<std::vector<bool>> & cellsVisited, std::vector<int> start, std::vector<int> end)
 {
     int row = start[0], col = start[1];
@@ -269,7 +279,7 @@ bool Maze::solver(std::vector<std::vector<int>>& path, std::vector<std::vector<b
     }
 }
 
-void Maze::display(bool showSolution)
+void Maze::display_ASCII(bool showSolution)
 {
     std::cout << std::endl;
     for (int i = 0; i < 2 * m_rows + 1; i++)

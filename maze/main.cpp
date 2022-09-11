@@ -96,7 +96,7 @@ int main(int argc, const char * argv[]) {
         }
         
         Maze M(rows, columns, start, end);
-        M.display();
+        M.display_ASCII();
         
         // Ask if user wants to see solution
         while (true) {
@@ -104,7 +104,7 @@ int main(int argc, const char * argv[]) {
             std::cin >> solve;
             ignoreLine();
             if (solve == "yes") {
-                M.display_solution();
+                M.display_solution_ASCII();
                 break;
             } else if (solve == "no") {
                 break;
@@ -116,7 +116,7 @@ int main(int argc, const char * argv[]) {
         std::cout << "\n";
         
         M.display_image();
-        M.display_image(true);
+        M.display_solution_image();
     }
     
     return 0;

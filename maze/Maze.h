@@ -15,9 +15,10 @@ class Maze
 {
 public:
     Maze(int rows, int columns, std::string start, std::string end, char wall_char = 'X', char soltn_char = '`');
-    void display(bool showSolution = false);
+    void display_ASCII(bool showSolution = false);
     void display_image(bool showSolution = false);
-    void display_solution();
+    void display_solution_ASCII();
+    void display_solution_image();
 private:
     // Maze dimensions
     int m_columns;
@@ -47,7 +48,8 @@ private:
     bool m_beenSolved;
     std::vector<std::vector<bool>> m_solution; // keeps track of which cells are part of solution path
     void solve();
-    bool solver(std::vector<std::vector<int>>& path, std::vector<std::vector<bool>> & cellsVisited, std::vector<int> start, std::vector<int> end);
+    bool solver(std::vector<std::vector<int>>& path, std::vector<std::vector<bool>> & cellsVisited,
+                std::vector<int> start, std::vector<int> end); // helper to solve
 };
 
 #endif /* Maze_h */
