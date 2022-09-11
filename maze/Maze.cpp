@@ -18,7 +18,7 @@
 
 Maze::Maze(int rows, int columns, std::string start, std::string end, char wall_char, char soltn_char)
 : m_rows(rows), m_columns(columns), m_startPoint(start), m_endPoint(end), m_beenSolved(false),
-    m_wall_char(wall_char), m_soltn_char(soltn_char), m_wall_color(100), m_soltn_color(255),
+    m_wall_char(wall_char), m_soltn_char(soltn_char), m_wall_color(100), m_soltn_color(200),
 m_space_color(0)
 {
     m_horizontalWalls.resize(m_rows + 1);
@@ -180,42 +180,47 @@ m_space_color(0)
 void Maze::display_solution()
 {
     // If maze hasn't been solved yet, do that
-    if (!m_beenSolved) {
-        m_solution.resize(m_rows);
-        for (int i = 0; i < m_rows; i++)
-        {
-            m_solution[i].resize(m_columns);
-            for (int k = 0; k < m_columns; k++)
-                m_solution[i][k] = false;
-        }
-        
-        // use depth first search to find path from start cell to end cell
-        std::vector<std::vector<int>> solutionPath;
-        // set up a 2d vector representing each cell in the maze as unvisited
-        std::vector<std::vector<bool>> cellsVisited;
-        cellsVisited.resize(m_rows);
-        for (int i = 0; i < m_rows; i++)
-        {
-            cellsVisited[i].resize(m_columns);
-            for (int k = 0; k < m_columns; k++)
-                cellsVisited[i][k] = false;
-        }
-        
-        solve(solutionPath,cellsVisited,m_startCell,m_endCell);
-        solutionPath.push_back(m_endCell);
-        
-        // take cells from the solutionPath and mark them in 2d vector m_solution member
-        for (int i = 0; i < solutionPath.size(); i++) {
-            m_solution[solutionPath[i][0]][solutionPath[i][1]] = true;
-        }
-        m_beenSolved = true;
-    }
+    if (!m_beenSolved)
+        solve();
     
     // Actual work of displaying solution is done in display(), using m_solution
     display(true);
 }
 
-bool Maze::solve(std::vector<std::vector<int>>& path, std::vector<std::vector<bool>> & cellsVisited, std::vector<int> start, std::vector<int> end)
+void Maze::solve()
+{
+    m_solution.resize(m_rows);
+    for (int i = 0; i < m_rows; i++)
+    {
+        m_solution[i].resize(m_columns);
+        for (int k = 0; k < m_columns; k++)
+            m_solution[i][k] = false;
+    }
+    
+    // use depth first search to find path from start cell to end cell
+    std::vector<std::vector<int>> solutionPath;
+    // set up a 2d vector representing each cell in the maze as unvisited
+    std::vector<std::vector<bool>> cellsVisited;
+    cellsVisited.resize(m_rows);
+    for (int i = 0; i < m_rows; i++)
+    {
+        cellsVisited[i].resize(m_columns);
+        for (int k = 0; k < m_columns; k++)
+            cellsVisited[i][k] = false;
+    }
+    
+    solver(solutionPath,cellsVisited,m_startCell,m_endCell);
+    solutionPath.push_back(m_endCell);
+    
+    // take cells from the solutionPath and mark them in 2d vector m_solution member
+    for (int i = 0; i < solutionPath.size(); i++) {
+        m_solution[solutionPath[i][0]][solutionPath[i][1]] = true;
+    }
+    m_beenSolved = true;
+}
+
+// helper function to solve because it uses recursion
+bool Maze::solver(std::vector<std::vector<int>>& path, std::vector<std::vector<bool>> & cellsVisited, std::vector<int> start, std::vector<int> end)
 {
     int row = start[0], col = start[1];
     cellsVisited[row][col] = true; // current cell visited
@@ -232,28 +237,28 @@ bool Maze::solve(std::vector<std::vector<int>>& path, std::vector<std::vector<bo
         std::vector<int> rightCell;
         rightCell.push_back(row);
         rightCell.push_back(col + 1);
-        result = solve(path,cellsVisited, rightCell, end);
+        result = solver(path,cellsVisited, rightCell, end);
     }
     // left
     if (!result && col - 1 >= 0 && !m_verticalWalls[col][row] && !cellsVisited[row][col - 1]) {
         std::vector<int> leftCell;
         leftCell.push_back(row);
         leftCell.push_back(col - 1);
-        result = solve(path,cellsVisited, leftCell, end);
+        result = solver(path,cellsVisited, leftCell, end);
     }
     // up
     if (!result && row - 1 >= 0 && !m_horizontalWalls[row][col] && !cellsVisited[row - 1][col]) {
         std::vector<int> upCell;
         upCell.push_back(row - 1);
         upCell.push_back(col);
-        result = solve(path,cellsVisited, upCell, end);
+        result = solver(path,cellsVisited, upCell, end);
     }
     // down
     if (!result && row + 1 < m_rows && !m_horizontalWalls[row + 1][col] && !cellsVisited[row + 1][col]) {
         std::vector<int> downCell;
         downCell.push_back(row + 1);
         downCell.push_back(col);
-        result = solve(path,cellsVisited, downCell, end);
+        result = solver(path,cellsVisited, downCell, end);
     }
     
     if (result) {
