@@ -27,6 +27,7 @@ int main(int argc, const char * argv[]) {
     while (true) {
         int rows, columns;
         std::string start, end, solve;
+        char graphics;
         std::cout << "Make a new maze!\n" << "\n";
         
         // Get number of rows
@@ -96,7 +97,21 @@ int main(int argc, const char * argv[]) {
         }
         
         Maze M(rows, columns, start, end);
-        M.display_ASCII();
+        
+        // Choose ASCII or image graphics
+        while (true) {
+            std::cout << "Enter 'a' for ASCII graphics or 'i' for image graphics: ";
+            std::cin >> graphics;
+            ignoreLine();
+            if (graphics == 'a') {
+                M.display_ASCII();
+                break;
+            } else if (graphics == 'i') {
+                M.display_image();
+                break;
+            } else
+                std::cerr << "Invalid input. Please enter 'a' or 'i'\n";
+        }
         
         // Ask if user wants to see solution
         while (true) {
@@ -104,7 +119,13 @@ int main(int argc, const char * argv[]) {
             std::cin >> solve;
             ignoreLine();
             if (solve == "yes") {
-                M.display_solution_ASCII();
+                switch (graphics) {
+                    case 'i':
+                        M.display_image();
+                        break;
+                    default:
+                        M.display_ASCII();
+                }
                 break;
             } else if (solve == "no") {
                 break;
@@ -113,10 +134,7 @@ int main(int argc, const char * argv[]) {
             }
         }
         
-        std::cout << "\n";
-        
-        M.display_image();
-        M.display_solution_image();
+        std::cout << endl;
     }
     
     return 0;
