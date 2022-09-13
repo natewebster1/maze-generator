@@ -11,6 +11,9 @@
 #include <stack>
 #include <stdlib.h>
 #include <time.h>
+#include <string>
+#include <filesystem>
+#include <unistd.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
@@ -19,7 +22,7 @@
 Maze::Maze(int rows, int columns, std::string start, std::string end, char wall_char, char soltn_char)
 : m_rows(rows), m_columns(columns), m_startPoint(start), m_endPoint(end), m_beenSolved(false),
     m_wall_char(wall_char), m_soltn_char(soltn_char), m_wall_color(100), m_soltn_color(200),
-m_space_color(0)
+m_space_color(0), m_save_path("")
 {
     m_horizontalWalls.resize(m_rows + 1);
     for (int i = 0; i < m_rows + 1; i++)
@@ -74,7 +77,6 @@ m_space_color(0)
         m_endCell.push_back(m_rows/2);
         m_endCell.push_back(m_columns - 1);
     }
-    
     
     
     // set up a 2d vector representing each cell in the maze as unvisited
@@ -435,13 +437,72 @@ void Maze::display_image(bool showSolution)
     }
     
     cv::Mat imgVec(2 * m_rows + 1, 2 * m_columns + 1, CV_8U, image_vec.data());
+    // scaledImg resizes imgVec so the final image is easier to see
+    cv::Mat scaledImg;
+    int scale = 12;
+    cv::resize(imgVec, scaledImg, cv::Size(imgVec.cols * scale, imgVec.rows * scale), 0, 0, cv::INTER_NEAREST);
+    
     std::string windowName = "Maze image";
-    cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
-    cv::imshow(windowName, imgVec);
-    int k = cv::waitKey(0);
-    if (k == 's') {
-        cv::imwrite("/Users/natewebster/Desktop/maze_img.png", imgVec);
+    cv::namedWindow(windowName, cv::WINDOW_NORMAL);
+    cv::imshow(windowName, scaledImg);
+    int k = cv::waitKey(0); // image is displayed in window until key is pressed
+    
+    if (k == 's') { // if 's' was pressed, save the image
+        std::cout << std::endl << "By default, the image will be saved in ";
+        if (m_save_path == "") {
+            std::cout << "your current working directory, which is\n"
+            << std::__fs::filesystem::current_path() << std::endl;
+        } else
+            std::cout << m_save_path << std::endl;
+        std::cout << std::endl;
+        char next;
+        // Determine next step
+        while (true) {
+            std::cout << "Press 'c' to continue or 'n' to pick a new directory: ";
+            std::cin >> next;
+            ignoreLine();
+            if (next != 'c' && next != 'n') {
+                std::cerr << "Invalid input. Must enter 'c' or 'n'.\n";
+            } else {
+                break;
+            }
+        }
+        if (next == 'n') {
+            std::string path;
+            std::cout << "Please enter a directory without the image file name,\n"
+                << "as that will be automatically generated: ";
+            std::cin >> path;
+            ignoreLine();
+            m_save_path = path;
+        }
+        
+        
+        
+        // image name contains maze dimensions
+        std::string imgName = "maze_" + std::to_string(m_rows) + "x" + std::to_string(m_columns) + "_";
+        
+        // image name indicates start and end positions
+        if (m_startPoint == "left" || m_endPoint == "left")
+            imgName += "L";
+        if (m_startPoint == "top" || m_endPoint == "top")
+            imgName += "T";
+        if (m_startPoint == "right" || m_endPoint == "right")
+            imgName += "R";
+        if (m_startPoint == "bottom" || m_endPoint == "bottom")
+            imgName += "B";
+        
+        // image name indicates if it's a solution
+        if (showSolution)
+            imgName = imgName + "_" + "soltn";
+        
+        imgName += ".png";
+        std::string imgPath = m_save_path + imgName;
+        cv::imwrite(imgPath, scaledImg); // save scaledImg at imgPath
     }
     cv::destroyWindow(windowName);
     cv::waitKey(1);
+}
+
+void ignoreLine() {
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }

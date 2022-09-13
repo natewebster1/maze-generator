@@ -12,6 +12,7 @@
 		2DD7DCC628C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7DCC528C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib */; };
 		2DD7DCCC28C722B9003820DC /* libopencv_highgui.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7DCCB28C722B9003820DC /* libopencv_highgui.4.6.0.dylib */; };
 		2DD7DCCE28C72AC4003820DC /* libopencv_core.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7DCCD28C72AC4003820DC /* libopencv_core.4.6.0.dylib */; };
+		2DD7DCD128CEA351003820DC /* libopencv_imgproc.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7DCD028CEA351003820DC /* libopencv_imgproc.4.6.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,7 @@
 		2DD7DCCB28C722B9003820DC /* libopencv_highgui.4.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.4.6.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.6.0/lib/libopencv_highgui.4.6.0.dylib; sourceTree = "<group>"; };
 		2DD7DCCD28C72AC4003820DC /* libopencv_core.4.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.4.6.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.6.0/lib/libopencv_core.4.6.0.dylib; sourceTree = "<group>"; };
 		2DD7DCCF28CA78A8003820DC /* maze.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = maze.entitlements; sourceTree = "<group>"; };
+		2DD7DCD028CEA351003820DC /* libopencv_imgproc.4.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.4.6.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.6.0/lib/libopencv_imgproc.4.6.0.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DD7DCCE28C72AC4003820DC /* libopencv_core.4.6.0.dylib in Frameworks */,
+				2DD7DCD128CEA351003820DC /* libopencv_imgproc.4.6.0.dylib in Frameworks */,
 				2DD7DCC628C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib in Frameworks */,
 				2DD7DCCC28C722B9003820DC /* libopencv_highgui.4.6.0.dylib in Frameworks */,
 			);
@@ -54,6 +57,7 @@
 		2D522CDD26DF3840009045D6 = {
 			isa = PBXGroup;
 			children = (
+				2DD7DCD028CEA351003820DC /* libopencv_imgproc.4.6.0.dylib */,
 				2DD7DCCD28C72AC4003820DC /* libopencv_core.4.6.0.dylib */,
 				2DD7DCCB28C722B9003820DC /* libopencv_highgui.4.6.0.dylib */,
 				2DD7DCC528C72039003820DC /* libopencv_imgcodecs.4.6.0.dylib */,

@@ -44,12 +44,15 @@ private:
     // 0 if gap in wall, 1 if wall is there
     std::vector<std::vector<int>> m_horizontalWalls; // [m_rows + 1][m_columns]
     std::vector<std::vector<int>> m_verticalWalls; // [m_columns + 1][m_rows]
-        
+    
+    std::string m_save_path; // path to the directory where maze images will be saved
     bool m_beenSolved;
     std::vector<std::vector<bool>> m_solution; // keeps track of which cells are part of solution path
     void solve();
     bool solver(std::vector<std::vector<int>>& path, std::vector<std::vector<bool>> & cellsVisited,
                 std::vector<int> start, std::vector<int> end); // helper to solve
 };
+
+void ignoreLine();  // used to ignore all buffered characters up to a newline
 
 #endif /* Maze_h */

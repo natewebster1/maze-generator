@@ -12,18 +12,18 @@
 #include <stdlib.h>
 #include <time.h>
 #include <limits>
+#include <string>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace std;
 
-void ignoreLine();
-
 int main(int argc, const char * argv[]) {
-
+    
     while (true) {
         int rows, columns;
         std::string start, end, solve;
@@ -107,6 +107,7 @@ int main(int argc, const char * argv[]) {
                 M.display_ASCII();
                 break;
             } else if (graphics == 'i') {
+                std::cout << "After clicking on the image window, press 's' to save the maze image or any other character to continue.\n";
                 M.display_image();
                 break;
             } else
@@ -121,10 +122,11 @@ int main(int argc, const char * argv[]) {
             if (solve == "yes") {
                 switch (graphics) {
                     case 'i':
-                        M.display_image();
+                        std::cout << "After clicking on the image window, press 's' to save the maze image or any other character to continue.\n";
+                        M.display_solution_image();
                         break;
                     default:
-                        M.display_ASCII();
+                        M.display_solution_ASCII();
                 }
                 break;
             } else if (solve == "no") {
@@ -138,10 +140,4 @@ int main(int argc, const char * argv[]) {
     }
     
     return 0;
-}
-
-
-
-void ignoreLine() {  // used to ignore all buffered characters up to a newline
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
