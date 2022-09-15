@@ -36,6 +36,9 @@
 *.app
 
 ### Xcode ###
+
+*.entitlements
+
 ## User settings
 xcuserdata/
 
