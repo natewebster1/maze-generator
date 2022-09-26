@@ -56,7 +56,7 @@ Now, you have a 'maze.exe' executable.
 ## Usage
 To start the program, run
 ```
-$ ./maze.exe
+./maze.exe
 ```
 
 The program will run indefinitely, but can be stopped in gcc with Ctrl-c .
