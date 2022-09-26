@@ -14,9 +14,10 @@
 #include <string>
 #include <filesystem>
 #include <unistd.h>
+#include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs/imgcodecs.hpp>
-#include <opencv2/opencv.hpp>
+#include "opencv2/imgproc/imgproc.hpp"
 #include <opencv2/highgui/highgui.hpp>
 
 Maze::Maze(int rows, int columns, std::string start, std::string end, char wall_char, char soltn_char)
