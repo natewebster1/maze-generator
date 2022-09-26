@@ -30,7 +30,7 @@ And its solution:
 Go to the main page of the repository, and copy the link. Then use
 git clone to get a copy on your local computer.
 ```
-$ git clone https://github.com/natewebster1/maze-generator
+git clone https://github.com/natewebster1/maze-generator
 ```
 This project also requires the library OpenCV 4, so make sure to have that installed
 before trying to build.
@@ -40,8 +40,8 @@ Set your current working directory to the 'maze' file within maze-generator. Thi
 file contains the source code. Then to build, run something like
 
 ```
-$ g++ -std=c++11 -c -I/path/to/opencv4/headerFolder main.cpp Maze.cpp
-$ g++ -std=c++11 -o maze.exe main.o Maze.o -L/path/to/opencv4/libraryFolder -lopencv_highgui -lopencv_imgcodecs -lopencv_core -lopencv_imgproc
+g++ -std=c++11 -c -I/path/to/opencv4/headerFolder main.cpp Maze.cpp
+g++ -std=c++11 -o maze.exe main.o Maze.o -L/path/to/opencv4/libraryFolder -lopencv_highgui -lopencv_imgcodecs -lopencv_core -lopencv_imgproc
 ```
 
 For instance, on my local machine running macOS 12.4, I run
